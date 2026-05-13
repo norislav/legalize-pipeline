@@ -1,0 +1,297 @@
+[
+  {
+    "@id": "http://data.europa.eu/eli/ontology#LegalResource"
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/resource/authority/document-type/ZAKON"
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-institutions/19505"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/ontology#LegalExpression"
+  },
+  {
+    "@id": "http://publications.europa.eu/resource/authority/language/HRV"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/ontology#Format"
+  },
+  {
+    "@id": "http://www.iana.org/assignments/media-types/text/html"
+  },
+  {
+    "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2022/38/470"
+  },
+  {
+    "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2022/38/469"
+  },
+  {
+    "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2003/167/2399"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/1993/83/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/1996/9/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2001/29/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2004/48/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2006/123/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2006/116/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2009/24/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2011/77/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2006/115/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2012/28/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2014/26/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2017/1564/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/reg/2019/789/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/reg/2017/1128/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/reg/2017/1563/oj"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/dir/2001/84/oj"
+  },
+  {
+    "@id": "http://eurovoc.europa.eu/283"
+  },
+  {
+    "@id": "http://eurovoc.europa.eu/529"
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-legal-area/25"
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-content-type/1"
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-index-terms/1510"
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-index-terms/2255"
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2021/111/1941",
+    "@type": [
+      "http://data.europa.eu/eli/ontology#LegalResource"
+    ],
+    "http://data.europa.eu/eli/ontology#type_document": [
+      {
+        "@id": "https://narodne-novine.nn.hr/resource/authority/document-type/ZAKON"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#number": [
+      {
+        "@value": "1941"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#date_document": [
+      {
+        "@value": "2021-10-01",
+        "@type": "http://www.w3.org/2001/XMLSchema#date"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#date_publication": [
+      {
+        "@value": "2021-10-14",
+        "@type": "http://www.w3.org/2001/XMLSchema#date"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#passed_by": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-institutions/19505"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#is_realized_by": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2021/111/1941/hrv"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#basis_for": [
+      {
+        "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2022/38/470"
+      },
+      {
+        "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2022/38/469"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#repeals": [
+      {
+        "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2003/167/2399"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#transposes": [
+      {
+        "@id": "http://data.europa.eu/eli/dir/1993/83/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/1996/9/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/2001/29/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/2004/48/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/2006/123/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/2006/116/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/2009/24/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/2011/77/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/2006/115/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/2012/28/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/2014/26/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/dir/2017/1564/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/reg/2019/789/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/reg/2017/1128/oj"
+      },
+      {
+        "@id": "http://data.europa.eu/eli/reg/2017/1563/oj"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#transposed_by": [
+      {
+        "@id": "http://data.europa.eu/eli/dir/2001/84/oj"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#is_about": [
+      {
+        "@id": "http://eurovoc.europa.eu/283"
+      },
+      {
+        "@id": "http://eurovoc.europa.eu/529"
+      },
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-legal-area/25"
+      },
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-content-type/1"
+      },
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-index-terms/1510"
+      },
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-index-terms/2255"
+      }
+    ]
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2021/111/1941/hrv",
+    "@type": [
+      "http://data.europa.eu/eli/ontology#LegalExpression"
+    ],
+    "http://data.europa.eu/eli/ontology#publisher": [
+      {
+        "@value": "Narodne novine"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#realizes": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2021/111/1941"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#language": [
+      {
+        "@id": "http://publications.europa.eu/resource/authority/language/HRV"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#title": [
+      {
+        "@value": "Zakon o autorskom pravu i srodnim pravima"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#is_embodied_by": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2021/111/1941/hrv/html"
+      },
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2021/111/1941/hrv/printhtml"
+      }
+    ]
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2021/111/1941/hrv/html",
+    "@type": [
+      "http://data.europa.eu/eli/ontology#Format"
+    ],
+    "http://data.europa.eu/eli/ontology#publisher": [
+      {
+        "@value": "Narodne novine"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#embodies": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2021/111/1941/hrv"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#format": [
+      {
+        "@id": "http://www.iana.org/assignments/media-types/text/html"
+      }
+    ]
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2021/111/1941/hrv/printhtml",
+    "@type": [
+      "http://data.europa.eu/eli/ontology#Format"
+    ],
+    "http://data.europa.eu/eli/ontology#publisher": [
+      {
+        "@value": "Narodne novine"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#embodies": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2021/111/1941/hrv"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#format": [
+      {
+        "@id": "http://www.iana.org/assignments/media-types/text/html"
+      }
+    ]
+  }
+]

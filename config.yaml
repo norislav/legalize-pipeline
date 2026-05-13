@@ -553,3 +553,29 @@ countries:
         - "anaw"
         - "mwa"
         - "nia"
+
+  hr:
+    repo_path: "../countries/hr"
+    data_dir: "../countries/data-hr"
+    cache_dir: ".cache"
+    # Narodne novine (narodne-novine.nn.hr) — official Croatian gazette.
+    # License: official legal texts are public domain per Croatian Copyright
+    # Act (NN 111/2021) Article 18(3). See RESEARCH-HR.md §0.1.
+    # Rate limit: NN's data-access page states "max 3 queries per second".
+    # Scope v1: Službeni dio (part=1) only — ustav + zakon + uredba ≈ 3-5K
+    # base laws across ~5,039 NN issues since 1990.
+    # max_workers tuning is deferred to Step 8 (50-law benchmark); 2 workers
+    # × 1.5 r/s = 3 r/s aggregate keeps us under NN's published ceiling.
+    max_workers: 2
+    source:
+      base_url: "https://narodne-novine.nn.hr"
+      request_timeout: 30
+      max_retries: 5
+      requests_per_second: 1.5
+      # Sitemap parts to enumerate. 1 = Službeni dio (primary legislation).
+      # 2 = Međunarodni dio (treaties, deferred to v2).
+      # 3 = Oglasni dio (announcements — out of scope; also disallowed in robots.txt).
+      parts:
+        - 1
+      # Lower bound for historical bootstrap. NN coverage starts 1990.
+      year_start: 1990

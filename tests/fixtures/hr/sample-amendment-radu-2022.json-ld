@@ -1,0 +1,158 @@
+[
+  {
+    "@id": "http://data.europa.eu/eli/ontology#LegalResource"
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/resource/authority/document-type/ZAKON"
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-institutions/19505"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/ontology#LegalExpression"
+  },
+  {
+    "@id": "http://publications.europa.eu/resource/authority/language/HRV"
+  },
+  {
+    "@id": "http://data.europa.eu/eli/ontology#Format"
+  },
+  {
+    "@id": "http://www.iana.org/assignments/media-types/text/html"
+  },
+  {
+    "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2014/93/1872"
+  },
+  {
+    "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2010/62/1979"
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2022/151/2343",
+    "@type": [
+      "http://data.europa.eu/eli/ontology#LegalResource"
+    ],
+    "http://data.europa.eu/eli/ontology#type_document": [
+      {
+        "@id": "https://narodne-novine.nn.hr/resource/authority/document-type/ZAKON"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#number": [
+      {
+        "@value": "2343"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#date_document": [
+      {
+        "@value": "2022-12-16",
+        "@type": "http://www.w3.org/2001/XMLSchema#date"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#date_publication": [
+      {
+        "@value": "2022-12-22",
+        "@type": "http://www.w3.org/2001/XMLSchema#date"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#passed_by": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/vocabularies/nn-institutions/19505"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#is_realized_by": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2022/151/2343/hrv"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#amends": [
+      {
+        "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2014/93/1872"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#changes": [
+      {
+        "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2014/93/1872"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#related_to": [
+      {
+        "@id": "https:/narodne-novine.nn.hr/eli/sluzbeni/2010/62/1979"
+      }
+    ]
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2022/151/2343/hrv",
+    "@type": [
+      "http://data.europa.eu/eli/ontology#LegalExpression"
+    ],
+    "http://data.europa.eu/eli/ontology#publisher": [
+      {
+        "@value": "Narodne novine"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#realizes": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2022/151/2343"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#language": [
+      {
+        "@id": "http://publications.europa.eu/resource/authority/language/HRV"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#title": [
+      {
+        "@value": "Zakon o izmjenama i dopunama Zakona o radu"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#is_embodied_by": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2022/151/2343/hrv/html"
+      },
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2022/151/2343/hrv/printhtml"
+      }
+    ]
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2022/151/2343/hrv/html",
+    "@type": [
+      "http://data.europa.eu/eli/ontology#Format"
+    ],
+    "http://data.europa.eu/eli/ontology#publisher": [
+      {
+        "@value": "Narodne novine"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#embodies": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2022/151/2343/hrv"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#format": [
+      {
+        "@id": "http://www.iana.org/assignments/media-types/text/html"
+      }
+    ]
+  },
+  {
+    "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2022/151/2343/hrv/printhtml",
+    "@type": [
+      "http://data.europa.eu/eli/ontology#Format"
+    ],
+    "http://data.europa.eu/eli/ontology#publisher": [
+      {
+        "@value": "Narodne novine"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#embodies": [
+      {
+        "@id": "https://narodne-novine.nn.hr/eli/sluzbeni/2022/151/2343/hrv"
+      }
+    ],
+    "http://data.europa.eu/eli/ontology#format": [
+      {
+        "@id": "http://www.iana.org/assignments/media-types/text/html"
+      }
+    ]
+  }
+]

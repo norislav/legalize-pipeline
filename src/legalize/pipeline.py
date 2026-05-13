@@ -27,10 +27,12 @@ from legalize.committer.git_ops import FastImporter, GitRepo
 from legalize.committer.message import build_commit_info
 from legalize.config import Config
 from legalize.models import (
+    Block,
     CommitType,
     NormMetadata,
     ParsedNorm,
     Reform,
+    Version,
 )
 from legalize.state.store import StateStore, resolve_dates_to_process
 from legalize.storage import load_norma_from_json, save_structured_json
@@ -230,6 +232,92 @@ def generic_daily(
 # ─────────────────────────────────────────────
 
 
+def _safe_id(norm_id: str) -> str:
+    return norm_id.replace(":", "-").replace("/", "-").replace(" ", "")
+
+
+def _alias_path(data_dir: str | Path) -> Path:
+    return Path(data_dir) / "discovery_aliases.txt"
+
+
+def _load_aliases(data_dir: str | Path) -> dict[str, str]:
+    """Load norm_id → resolved_norm_id map from disk (empty if absent)."""
+    path = _alias_path(data_dir)
+    if not path.exists():
+        return {}
+    out: dict[str, str] = {}
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or "\t" not in line:
+            continue
+        src, dst = line.split("\t", 1)
+        out[src.strip()] = dst.strip()
+    return out
+
+
+def _record_alias(data_dir: str | Path, norm_id: str, resolved: str) -> None:
+    """Append norm_id → resolved to discovery_aliases.txt (no-op if equal)."""
+    if norm_id == resolved:
+        return
+    path = _alias_path(data_dir)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with open(path, "a", encoding="utf-8") as f:
+        f.write(f"{norm_id}\t{resolved}\n")
+
+
+_DATE_SENTINEL = date(1900, 1, 1)
+
+
+def _backfill_sentinel_dates(
+    blocks: list[Block], reforms: list[Reform], metadata: NormMetadata
+) -> tuple[list[Block], list[Reform]]:
+    """Rewrite placeholder dates in blocks and reforms from metadata.
+
+    Text parsers that can't recover a publication date from content (e.g.
+    HR's PDF branch, HR's HTML branch when no <h3> citation) emit
+    date(1900, 1, 1) as a placeholder. The ELI/JSON-LD metadata carries
+    the real date — propagate it so downstream git author dates and
+    commit subjects reflect when the act was actually published.
+
+    No-op if metadata.publication_date is itself the sentinel (nothing
+    to back-fill with).
+    """
+    real = metadata.publication_date
+    if real == _DATE_SENTINEL:
+        return blocks, reforms
+
+    def _fixed_version(v: Version) -> Version:
+        if v.publication_date != _DATE_SENTINEL and v.effective_date != _DATE_SENTINEL:
+            return v
+        return Version(
+            norm_id=v.norm_id,
+            publication_date=real if v.publication_date == _DATE_SENTINEL else v.publication_date,
+            effective_date=real if v.effective_date == _DATE_SENTINEL else v.effective_date,
+            paragraphs=v.paragraphs,
+        )
+
+    new_blocks = [
+        Block(
+            id=b.id,
+            block_type=b.block_type,
+            title=b.title,
+            versions=tuple(_fixed_version(v) for v in b.versions),
+        )
+        for b in blocks
+    ]
+
+    new_reforms = [
+        Reform(
+            date=real if r.date == _DATE_SENTINEL else r.date,
+            norm_id=r.norm_id or metadata.identifier,
+            affected_blocks=r.affected_blocks,
+        )
+        for r in reforms
+    ]
+
+    return new_blocks, new_reforms
+
+
 def generic_fetch_one(
     config: Config,
     country: str,
@@ -240,16 +328,34 @@ def generic_fetch_one(
 
     Uses the country's client, text_parser, and metadata_parser.
     Saves structured JSON to data_dir.
+
+    If the parsed metadata.identifier differs from the requested norm_id
+    (e.g. source sitemap and canonical identifier disagree for that act),
+    the JSON is saved under the true identifier and a norm_id → identifier
+    alias is recorded so future runs short-circuit.
     """
     from legalize.countries import get_client_class, get_metadata_parser, get_text_parser
 
     cc = config.get_country(country)
-    safe_id = norm_id.replace(":", "-").replace("/", "-").replace(" ", "")
+    safe_id = _safe_id(norm_id)
     json_path = Path(cc.data_dir) / "json" / f"{safe_id}.json"
 
     if json_path.exists() and not force:
         console.print(f"  [dim]{norm_id} already processed, skipping[/dim]")
         return load_norma_from_json(json_path)
+
+    # Check the alias map: a prior run may have resolved this norm_id to a
+    # different canonical identifier and saved the JSON under that name.
+    if not force:
+        aliases = _load_aliases(cc.data_dir)
+        resolved = aliases.get(norm_id)
+        if resolved:
+            resolved_path = Path(cc.data_dir) / "json" / f"{_safe_id(resolved)}.json"
+            if resolved_path.exists():
+                console.print(
+                    f"  [dim]{norm_id} → {resolved} (alias), skipping[/dim]"
+                )
+                return load_norma_from_json(resolved_path)
 
     client_cls = get_client_class(country)
     text_parser = get_text_parser(country)
@@ -285,6 +391,16 @@ def generic_fetch_one(
                         norm_id,
                     )
 
+            # Back-fill sentinel dates from metadata.publication_date. Text
+            # parsers use date(1900, 1, 1) as "unknown date" when the content
+            # itself doesn't reveal one (e.g. HR's PDF branch, HR's HTML
+            # branch when no <h3> citation, SE's old SFS, etc.). The JSON-LD
+            # / detailsTable metadata is authoritative — propagate it so
+            # reforms and block versions downstream carry the real date.
+            blocks, reforms = _backfill_sentinel_dates(
+                list(blocks), list(reforms), metadata
+            )
+
             norm = ParsedNorm(
                 metadata=metadata,
                 blocks=tuple(blocks),
@@ -292,6 +408,14 @@ def generic_fetch_one(
             )
 
             save_structured_json(cc.data_dir, norm)
+
+            # Source and pipeline disagree on this act's identity — record
+            # the alias so future runs don't re-request under the stale id.
+            if _safe_id(metadata.identifier) != safe_id:
+                _record_alias(cc.data_dir, norm_id, metadata.identifier)
+                console.print(
+                    f"    [dim]alias: {norm_id} → {metadata.identifier}[/dim]"
+                )
 
             console.print(
                 f"  [green]✓[/green] {metadata.short_title}: "

@@ -1,0 +1,60 @@
+========================================================================
+§0.5 VERSION-HISTORY SPIKE — Croatia (HR)
+========================================================================
+
+Law: Ustav Republike Hrvatske (Croatian Constitution)
+Entry point: NN 85/2010 pročišćeni tekst
+
+Step 1: Parse pročišćeni tekst heading
+  <h3> raw: NN 85/2010 (9.7.2010.), Ustav Republike Hrvatske (pročišćeni tekst)
+  issue=85, year=2010, date=2010-07-09
+
+Step 2: Preamble citation chain (from articleContent first 6KB)
+  preamble sample (first 400 chars): ' Ustav Republike Hrvatske (pročišćeni tekst) NN 85/2010 (9.7.2010.), Ustav Republike Hrvatske (pročišćeni tekst) ODBOR ZA USTAV, POSLOVNIK I POLITIČKI SUSTAV HRVATSKOGA SABORA 2422 Odbor za Ustav, Poslovnik i politički sustav Hrvatskoga sabora na temelju svoje nadležnosti iz članka 57. Poslovnika Hrvatskoga sabora, na sjednici 6. srpnja 2010. godine utvrdio je pročišćeni tekst Ustava Republike Hrv'
+  12 unique (issue, year) tuples found:
+    NN 85/2010 -> year=2010
+    NN 56/90 -> year=1990
+    NN 135/97 -> year=1997
+    NN 8/98 -> year=1998
+    NN 113/2000 -> year=2000
+    NN 124/2000 -> year=2000
+    NN 28/2001 -> year=2001
+    NN 41/2001 -> year=2001
+    NN 55/2001 -> year=2001
+    NN 76/2010 -> year=2010
+    NN 2/10 -> year=2010
+    NN 1/01 -> year=2001
+
+Step 3: Resolve two predecessors -> fetch -> extract dated version
+
+  >>> NN 56/1990
+     trying https://narodne-novine.nn.hr/clanci/sluzbeni/1990_12_56_1092.html
+     <h3>: NN 56/1990 (22.12.1990.), Ustav Republike Hrvatske
+     EXTRACTED: title='Ustav Republike Hrvatske'
+                publication_date=1990-12-22
+                nn_issue=56/1990
+                paragraph_count=705
+                text_excerpt='Izražavajući tisućljetnu nacionalnu samobitnost i državnu opstojnost hrvatskoga naroda, potvrđenu slijedom ukupnoga povijesnoga zbivanja u različitim državnim o'
+
+  >>> NN 76/2010
+     trying https://narodne-novine.nn.hr/clanci/sluzbeni/2010_06_76_2214.html
+     <h3>: NN 76/2010 (18.6.2010.), Promjena Ustava Republike Hrvatske
+     EXTRACTED: title='Promjena Ustava Republike Hrvatske'
+                publication_date=2010-06-18
+                nn_issue=76/2010
+                paragraph_count=177
+                text_excerpt='Na temelju članka 145. Ustava Republike Hrvatske, Hrvatski sabor na sjednici 16. lipnja 2010., donio je'
+
+========================================================================
+RESULT: 2 versions dated and titled from one law's chain
+  version 1: date 1990-12-22, 705 paragraphs  (NN 56/1990, 'Ustav Republike Hrvatske')
+  version 2: date 2010-06-18, 177 paragraphs  (NN 76/2010, 'Promjena Ustava Republike Hrvatske')
+GATE: PASS
+========================================================================
+
+Interpretation:
+  - The pročišćeni tekst preamble yielded 12 predecessor citations
+  - 2 were resolvable to dated NN per-act pages via <h3>
+  - Full production discovery replaces the seeded URL index with a
+    sitemap lookup that enumerates all acts in issue {year}/{issue}
+    and filters to the one whose title matches the Ustav chain.

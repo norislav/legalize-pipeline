@@ -1,0 +1,72 @@
+[
+  {
+    "slug": "sample-constitution-procisceni-2010",
+    "role": "highest rank, pročišćeni tekst, pre-2015 (JSON-LD expected 404)",
+    "html_path": "/clanci/sluzbeni/2010_07_85_2422.html",
+    "eli_path": "/eli/sluzbeni/2010/85/2422",
+    "html_status": 200,
+    "html_bytes": 115573,
+    "jsonld_status": 404,
+    "jsonld_bytes": null
+  },
+  {
+    "slug": "sample-code-obvezni-odnosi-2005",
+    "role": "major code (Law of Obligations), pre-2015",
+    "html_path": "/clanci/sluzbeni/2005_03_35_707.html",
+    "eli_path": "/eli/sluzbeni/2005/35/707",
+    "html_status": 200,
+    "html_bytes": 1064826,
+    "jsonld_status": 404,
+    "jsonld_bytes": null
+  },
+  {
+    "slug": "sample-zakon-radu-2014",
+    "role": "ordinary zakon with post-2015 amendments pointing back",
+    "html_path": "/clanci/sluzbeni/2014_07_93_1872.html",
+    "eli_path": "/eli/sluzbeni/2014/93/1872",
+    "html_status": 200,
+    "html_bytes": 308455,
+    "jsonld_status": 404,
+    "jsonld_bytes": null
+  },
+  {
+    "slug": "sample-amendment-radu-2022",
+    "role": "post-2015 amendment with full ELI JSON-LD",
+    "html_path": "/clanci/sluzbeni/2022_12_151_2343.html",
+    "eli_path": "/eli/sluzbeni/2022/151/2343",
+    "html_status": 200,
+    "html_bytes": 232716,
+    "jsonld_status": 200,
+    "jsonld_bytes": 4511
+  },
+  {
+    "slug": "sample-autorsko-pravo-2021",
+    "role": "recent zakon, transposes EU directives, clean JSON-LD",
+    "html_path": "/clanci/sluzbeni/2021_10_111_1941.html",
+    "eli_path": "/eli/sluzbeni/2021/111/1941",
+    "html_status": 200,
+    "html_bytes": 555391,
+    "jsonld_status": 200,
+    "jsonld_bytes": 8045
+  },
+  {
+    "slug": "sample-uredba-radnih-mjesta-2023",
+    "role": "uredba (government decree), post-2015",
+    "html_path": "/clanci/sluzbeni/2023_03_26_414.html",
+    "eli_path": "/eli/sluzbeni/2023/26/414",
+    "html_status": 200,
+    "html_bytes": 48540,
+    "jsonld_status": 200,
+    "jsonld_bytes": 7177
+  },
+  {
+    "slug": "sample-pdv-2013",
+    "role": "tax law with rate tables",
+    "html_path": "/clanci/sluzbeni/2013_06_73_1451.html",
+    "eli_path": "/eli/sluzbeni/2013/73/1451",
+    "html_status": 200,
+    "html_bytes": 273188,
+    "jsonld_status": 404,
+    "jsonld_bytes": null
+  }
+]
