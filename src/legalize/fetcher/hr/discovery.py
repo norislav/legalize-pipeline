@@ -34,6 +34,13 @@ _SUB_SITEMAP_RE = re.compile(r"/sitemap_(\d+)_(\d{4})_(\d+)\.xml$")
 # Per-act URL (HTML form): /clanci/sluzbeni/{YYYY}_{MM}_{ISSUE}_{ACT}.html
 _ACT_URL_RE = re.compile(r"/clanci/sluzbeni/(\d{4})_(\d{2})_(\d+)_(\d+)\.html$")
 
+# discover_daily walks issues newest-first and stops once an issue's
+# publication_date is this many days before the target. NN occasionally
+# publishes back-dated supplementary issues (e.g. NN 91A appearing after
+# NN 92), so the margin is non-zero. 14 days has comfortable headroom
+# without scanning the whole year.
+_DAILY_STOP_MARGIN_DAYS = 14
+
 
 class NarodneNovineDiscovery(NormDiscovery):
     """Discovers all Narodne novine acts via the public sitemap."""
@@ -63,30 +70,66 @@ class NarodneNovineDiscovery(NormDiscovery):
     def discover_daily(
         self, client: LegislativeClient, target_date: date, **kwargs
     ) -> Iterator[str]:
-        """Yield HR-NN norm_ids for acts whose sitemap lastmod matches target_date.
+        """Yield HR-NN norm_ids for acts whose date_publication matches target_date.
 
-        We scan sub-sitemaps for the target year and filter by <lastmod>.
+        NN's sitemap does not populate the ``<lastmod>`` element — every
+        entry has an empty value — so we cannot filter on it. Instead we
+        walk the target year's sub-sitemaps newest-issue first, probe
+        the first act of each issue for its JSON-LD ``date_publication``,
+        and yield every act from issues that match ``target_date``. Walk
+        stops once an issue is dated more than ``_DAILY_STOP_MARGIN_DAYS``
+        before the target (later/lower-numbered issues cannot be newer).
+
+        NN publishes 0–3 issues per weekday and ~50–200 acts per issue,
+        so the cost is ~1 metadata fetch per recent issue scanned. At
+        the configured 1.5 r/s rate, scanning 5 recent issues costs
+        ~5 seconds — comparable to the previous (broken) implementation.
         """
+        from datetime import timedelta
+
+        from legalize.fetcher.hr.parser import NarodneNovineMetadataParser
+
         assert isinstance(client, NarodneNovineClient)
-        iso = target_date.isoformat()
-        for sub_url, _part, year, _issue in self._enumerate_sub_sitemaps(client):
-            if year != target_date.year:
-                continue
+        meta_parser = NarodneNovineMetadataParser()
+
+        # Collect this year's sub-sitemaps; walk newest issue first.
+        issues: list[tuple[int, str]] = []
+        for sub_url, _part, year, issue_num in self._enumerate_sub_sitemaps(client):
+            if year == target_date.year:
+                issues.append((issue_num, sub_url))
+        issues.sort(reverse=True)
+
+        for issue_num, sub_url in issues:
             try:
-                raw = client.get_sitemap(sub_url)
-                root = ET.fromstring(raw.lstrip())
+                act_ids = list(self._parse_sub_sitemap(client, sub_url))
             except ET.ParseError:
+                logger.warning("Malformed sub-sitemap: %s", sub_url)
                 continue
-            for url_el in root.findall("sm:url", _SITEMAP_NS):
-                loc = (url_el.findtext("sm:loc", default="", namespaces=_SITEMAP_NS) or "").strip()
-                lastmod = (
-                    url_el.findtext("sm:lastmod", default="", namespaces=_SITEMAP_NS) or ""
-                ).strip()[:10]
-                if lastmod != iso:
-                    continue
-                norm_id = self._url_to_norm_id(loc)
-                if norm_id:
-                    yield norm_id
+            if not act_ids:
+                continue
+
+            # Probe the first act to learn the issue's publication date.
+            probe = act_ids[0]
+            try:
+                meta_data = client.get_metadata(probe)
+                metadata = meta_parser.parse(meta_data, probe)
+                issue_date = metadata.publication_date
+            except Exception as exc:
+                logger.warning(
+                    "Could not probe issue %d publication date via %s: %s",
+                    issue_num, probe, exc,
+                )
+                continue
+
+            if issue_date == target_date:
+                yield from act_ids
+            elif issue_date < target_date - timedelta(days=_DAILY_STOP_MARGIN_DAYS):
+                # Earlier issues can only have earlier dates — stop walking.
+                logger.debug(
+                    "Stopping daily walk at issue %d (%s, %d+ days before target)",
+                    issue_num, issue_date, _DAILY_STOP_MARGIN_DAYS,
+                )
+                return
 
     def _enumerate_sub_sitemaps(
         self, client: NarodneNovineClient
