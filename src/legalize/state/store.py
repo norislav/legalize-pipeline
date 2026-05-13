@@ -88,10 +88,16 @@ def infer_last_date_from_git(repo_path: str) -> date | None:
     Uses ``git log --grep`` to find only pipeline commits (which carry a
     Source-Date trailer), ignoring manual commits like README updates.
     Works for any country — all pipeline commits use the same trailer.
+
+    The grep is anchored to a line start (``^Source-Date:``) — without
+    the anchor, narrative mentions of the trailer name inside other
+    commit bodies (e.g. fix-pipeline commits that *describe* the
+    inference mechanism) match first and shadow the real bootstrap
+    commit, breaking state inference silently.
     """
     try:
         result = subprocess.run(
-            ["git", "log", "-1", "--grep=Source-Date:", "--format=%B"],
+            ["git", "log", "-1", "--grep=^Source-Date:", "--format=%B"],
             cwd=repo_path,
             capture_output=True,
             text=True,
